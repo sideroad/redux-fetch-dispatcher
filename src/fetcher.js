@@ -27,14 +27,15 @@ export default class fetcher {
 
       Object.keys(urls[resource]).map(action => {
         this[resource][action] = (values) => {
+          const _values = Object.assign( {}, urls[resource][action].defaults || {}, values);
           return exec({
             dispatch,
             client,
             url: urls[resource][action].url,
             method: urls[resource][action].method,
-            values,
+            values: _values,
             start: () => ({
-              values,
+              _values,
               type: resource + '/' + action.toUpperCase() + '_START'
             }),
             success: (res) => ({
